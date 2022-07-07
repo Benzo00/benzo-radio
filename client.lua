@@ -218,3 +218,17 @@ end)
 if Config.KeyMappings.Enabled then
     RegisterKeyMapping("radio", 'Toggle Radio', 'keyboard', Config.KeyMappings.Key)
 end
+
+RegisterNetEvent('esx:playerLoaded', function(xPlayer)
+    ESX.PlayerData = xPlayer
+end)
+
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(Job)
+    ESX.PlayerData.job = Job
+end)
+
+AddEventHandler('onResourceStart', function(resource)
+    if resource ~= GetCurrentResourceName() then return end
+    ESX.PlayerData = ESX.GetPlayerData()
+end)
