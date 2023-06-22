@@ -2,11 +2,11 @@
 qb-radio Coverted to ESX By Mycroft and Benzo
 
 ## Dependencies
-- [esx legacy](https://docs.esx-framework.org)
-- [pma-voice](https://githubmate.com/repo/AvarianKnight/pma-voice)
+- [ESX Legacy](https://documentation.esx-framework.org/)
+- [pma-voice](https://github.com/AvarianKnight/pma-voice)
 
 ## Features
-- Latest Nopixel Inspired Radio
+- Latest NoPixel-inspired Radio
 - Channel Restrictions
 - Highly Configurable
 - Low MS
