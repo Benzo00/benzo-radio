@@ -5,7 +5,7 @@
 ## Dependencies
 - [ox_lib](https://overextended.dev/)
 - [ox_inventory](https://overextended.dev/)
-- [pma-voice](https://githubmate.com/repo/AvarianKnight/pma-voice)
+- [pma-voice](https://github.com/AvarianKnight/pma-voice)
 
 
 ## Features
