@@ -13,11 +13,25 @@
 - Channel Restrictions
 - Highly Configurable
 - Low MS
-- Inventory Image [qb-radio/imgforinvenotry]
+- Inventory Image [benzo-radio/imgforinvenotry]
+
+# Extra Information
+- Item to add to ox_inventory/data/items.lua
+
+	```
+ ['radio'] = {
+		label = 'Radio',
+		weight = 220,
+		stack = false,
+		consume = 0,
+		client = {
+			export = 'benzo-radio.radio'
+		}
+	},
+ ```
 
 ## Preview
 ![Preview Screenshot](https://i.imgur.com/cXjH8Rx.png)
-
 
 - Preview of the radio https://www.youtube.com/watch?v=fYU_PKpAG6o
 
