@@ -5,16 +5,14 @@ for channel, config in pairs(Config.RestrictedChannels) do
     end)
 end
 
-if Config.Item.Require then
-    ESX.RegisterUsableItem(Config.Item.name, function(source)
-        TriggerClientEvent('esx-radio:use', source)
-    end)
 
-    ESX.RegisterServerCallback('esx-radio:server:GetItem', function(source, cb, item)
-        local xPlayer = ESX.GetPlayerFromId(source)
-        local RadioItem = xPlayer.getInventoryItem(Config.Item.name).count
-        cb(RadioItem >= 1)
-    end)
+if Config.Item then
+exports('radio', function(event, item, inventory)
+    if event == 'usingItem' then
+        TriggerClientEvent('benzo-radio:use', inventory.id)
+        return
+     end
+  end)
 end
 
 

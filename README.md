@@ -1,9 +1,12 @@
-# ESX-Radio
-qb-radio Coverted to ESX By Mycroft and Benzo
+# Benzo-Radio
+
+## Radio for any server that uses ox_lib and ox_inventory
 
 ## Dependencies
-- [esx legacy](https://docs.esx-framework.org)
+- [ox_lib](https://overextended.dev/)
+- [ox_inventory](https://overextended.dev/)
 - [pma-voice](https://githubmate.com/repo/AvarianKnight/pma-voice)
+
 
 ## Features
 - Latest Nopixel Inspired Radio
@@ -22,11 +25,7 @@ qb-radio Coverted to ESX By Mycroft and Benzo
 - [Google search link to radio](https://www.aircraftspruce.com/catalog/avpages/yaesuVertexFTA750L.php)
 
 ## Discord
-- [Join Discord](https://discord.esx-framework.org/)
-
-## Donate
-- [trclassic Ko-fi Link](https://ko-fi.com/trclassic)
-- [ESX-Framework Ko-fi Link](https://ko-fi.com/esxframework)
+- [Join Discord](discord.gg/pyKDCByzUk)
 
 ## Original qb-radio
 - [qb-radio](https://github.com/qbcore-framework/qb-radio)

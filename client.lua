@@ -23,6 +23,24 @@ local function SplitStr(inputstr, sep)
     end
     return t
 end
+CreateThread(function ()
+if Config.Framework == 'esx' then
+     ESX = exports["es_extended"]:getSharedObject()
+else if Config.Framework == 'qb' then
+     QBCore = exports['qb-core']:GetCoreObject()
+    end
+  end
+end)
+
+local function getJob()
+   if Config.Framework == 'esx' then
+    return ESX.PlayerData.job.name
+   else
+    if Config.Framework == 'qb' then 
+        return QBCore.Functions.GetPlayerData().job.name
+     end
+   end
+end
 
 local function connecttoradio(channel)
     RadioChannel = channel
@@ -34,9 +52,17 @@ local function connecttoradio(channel)
     end
     exports["pma-voice"]:setRadioChannel(channel)
     if SplitStr(tostring(channel), ".")[2] ~= nil and SplitStr(tostring(channel), ".")[2] ~= "" then
-         Config.ClientNotification(Config.messages['joined to radio'] ..channel.. ' MHz', 'success')
+         lib.notify({
+            title = 'Joined Radio',
+            description = 'Youre connected to:' ..channel.. ' MHz',
+            type = 'success'
+         })
     else
-         Config.ClientNotification(Config.messages['joined to radio'] ..channel.. '.00 MHz', 'success')
+         lib.notify({
+            title = 'Joined Radio',
+            description = 'Youre connected to:'  ..channel.. '.00 MHz',
+            type = 'success'
+         })
     end
 end
 
@@ -50,7 +76,11 @@ local function leaveradio()
     onRadio = false
     exports["pma-voice"]:setRadioChannel(0)
     exports["pma-voice"]:setVoiceProperty("radioEnabled", false)
-    Config.ClientNotification(Config.messages['you leave'] , 'error')
+    lib.notify({
+        title = 'Left Channel.',
+        description = 'You left the channel.',
+        type = 'error'
+    })
 end
 
 local function toggleRadioAnimation(pState)
@@ -89,15 +119,17 @@ end
 --Exports
 exports("IsRadioOn", IsRadioOn)
 
-RegisterNetEvent('esx-radio:use', function()
+RegisterNetEvent('benzo-radio:use', function()
     toggleRadio(not radioMenu)
 end)
 
-RegisterNetEvent('esx-radio:onRadioDrop', function()
+RegisterNetEvent('benzo-radio:onRadioDrop', function()
     if RadioChannel ~= 0 then
         leaveradio()
     end
 end)
+
+
 
 -- NUI
 RegisterNUICallback('joinRadio', function(data, cb)
@@ -106,28 +138,48 @@ RegisterNUICallback('joinRadio', function(data, cb)
         if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
             if rchannel ~= RadioChannel then
                 if Config.RestrictedChannels[rchannel] ~= nil then
-                    if Config.RestrictedChannels[rchannel][ESX.PlayerData.job.name] then
+                    if Config.RestrictedChannels[rchannel][getJob()] then
                         connecttoradio(rchannel)
                     else
-                         Config.ClientNotification(Config.messages['restricted channel error'], 'error')
+                        lib.notify({
+                            title = 'Restriced Channel',
+                            description = 'You can not connect to this signal!',
+                            type = 'error'
+                        })
                     end
                 else
                     connecttoradio(rchannel)
                 end
             else
-                 Config.ClientNotification(Config.messages['you on radio'] , 'error')
+                lib.notify({
+                    title = 'Already Connected',
+                    description = 'Youre already connected to this channel',
+                    type = 'error'
+                })
             end
         else
-             Config.ClientNotification(Config.messages['invalid radio'] , 'error')
-        end
+            lib.notify({
+                title = 'Frequency not available',
+                description = 'This frequency is not available.',
+                type = 'error'
+            })     
+           end
     else
-         Config.ClientNotification(Config.messages['invalid radio'] , 'error')
-    end
+        lib.notify({
+            title = 'Frequency not available',
+            description = 'This frequency is not available.',
+            type = 'error'
+        })     
+        end
 end)
 
 RegisterNUICallback('leaveRadio', function(data, cb)
     if RadioChannel == 0 then
-         Config.ClientNotification(Config.messages['not on radio'], 'error')
+        lib.notify({
+            title = 'Not Connected',
+            description = 'Youre not connected to a signal',
+            type = 'error'
+        })     
     else
         leaveradio()
     end
@@ -136,27 +188,47 @@ end)
 RegisterNUICallback("volumeUp", function()
 	if RadioVolume <= 95 then
 		RadioVolume = RadioVolume + 5
-		Config.ClientNotification(Config.messages["volume radio"] .. RadioVolume, "success")
+        lib.notify({
+            title = 'Info',
+            description = 'New Volume '  .. RadioVolume,
+            type = 'success'
+        })   
 		exports["pma-voice"]:setRadioVolume(RadioVolume)
 	else
-		 Config.ClientNotification(Config.messages["decrease radio volume"], "error")
+        lib.notify({
+            title = 'Info',
+            description = 'The radio is already set to maximum volume',
+            type = 'error'
+        })   
 	end
 end)
 
 RegisterNUICallback("volumeDown", function()
 	if RadioVolume >= 10 then
 		RadioVolume = RadioVolume - 5
-		Config.ClientNotification(Config.messages["volume radio"] .. RadioVolume, "success")
+        lib.notify({
+            title = 'Info',
+            description = 'New Volume '  .. RadioVolume,
+            type = 'success'
+        })   
 		exports["pma-voice"]:setRadioVolume(RadioVolume)
 	else
-		 Config.ClientNotification(Config.messages["increase radio volume"], "error")
+        lib.notify({
+            title = 'Info',
+            description = 'The radio is already set to the lowest volume',
+            type = 'error'
+        })   
 	end
 end)
 
 RegisterNUICallback("increaseradiochannel", function(data, cb)
     RadioChannel = RadioChannel + 1
     exports["pma-voice"]:setRadioChannel(RadioChannel)
-    Config.ClientNotification(Config.messages["increase decrease radio channel"] .. RadioChannel, "success")
+    lib.notify({
+        title = 'Info',
+        description = 'New channel ' .. RadioChannel,
+        type = 'success'
+    })   
 end)
 
 RegisterNUICallback("decreaseradiochannel", function(data, cb)
@@ -164,7 +236,11 @@ RegisterNUICallback("decreaseradiochannel", function(data, cb)
     RadioChannel = RadioChannel - 1
     if RadioChannel >= 1 then
         exports["pma-voice"]:setRadioChannel(RadioChannel)
-        Config.ClientNotification(Config.messages["increase decrease radio channel"] .. RadioChannel, "success")
+        lib.notify({
+            title = 'Info',
+            description = 'New channel ' .. RadioChannel,
+            type = 'success'
+        })   
     end
 end)
 
@@ -178,42 +254,46 @@ end)
 
 --Main Thread
 CreateThread(function()
-    while Config.Item.Require do
+    while Config.Item do
         Wait(1000)
-        if ESX.IsPlayerLoaded() and onRadio then
-            ESX.TriggerServerCallback("esx-radio:server:GetItem", function(hasItem)
-                if not hasItem then
+        if cache.ped and onRadio then
+               if exports.ox_inventory:Search('count', 'radio') > 0 then
                     if RadioChannel ~= 0 then
                         leaveradio()
                     end
-                end
-            end, Config.Item.name)
-        end
+                end    
+          end
     end
 end)
 
 for i=1, Config.MaxFrequency do
-    RegisterNetEvent('esx-radio:client:JoinRadioChannel'.. i, function(channel)
+    RegisterNetEvent('benzo-radio:client:JoinRadioChannel'.. i, function(channel)
         exports["pma-voice"]:setRadioChannel(i)
         if SplitStr(tostring(channel), ".")[2] ~= nil and SplitStr(tostring(i), ".")[2] ~= "" then
-             Config.ClientNotification(Config.messages['joined to radio'] ..i.. ' MHz', 'success')
+             lib.notify({
+                title = 'Info',
+                description = 'Youre connected to: ' ..i.. ' MHz',
+                type = 'success'
+            })   
         else
-             Config.ClientNotification(Config.messages['joined to radio'] ..i.. '.00 MHz', 'success')
+             lib.notify({
+                title = 'Info',
+                description = 'Youre connected to: ' ..i.. '.00 MHz',
+                type = 'success'
+            })   
         end
     end)
 end
 
 -- Command
 RegisterCommand("radio", function(source)
-    if Config.Item.Require then 
-        ESX.TriggerServerCallback("esx-radio:server:GetItem", function(hasItem)
-            if hasItem then
-                toggleRadio(not radioMenu)
-            end
-        end, Config.Item.name)
-    else 
-        toggleRadio(not radioMenu)
+    if Config.Item then 
+        local amount = exports.ox_inventory:Search('count', 'radio')
+        if amount  >= 1 then
+            return
+        end
     end
+        toggleRadio(not radioMenu)
 end)
 
 if Config.KeyMappings.Enabled then
