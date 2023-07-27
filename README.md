@@ -15,11 +15,10 @@
 - Low MS
 - Inventory Image [benzo-radio/imgforinvenotry]
 
-# Extra Information
-- Item to add to ox_inventory/data/items.lua
-
-	```
- ['radio'] = {
+## Extra Information
+Item to add to `ox_inventory/data/items.lua`
+```
+	['radio'] = {
 		label = 'Radio',
 		weight = 220,
 		stack = false,
@@ -28,8 +27,7 @@
 			export = 'benzo-radio.radio'
 		}
 	},
- ```
-
+```
 ## Preview
 ![Preview Screenshot](https://i.imgur.com/cXjH8Rx.png)
 
