@@ -1,11 +1,11 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'Cool Radio for ESX, Coverted By Benzo & Mycroft'
+description 'Cool Radio, Edited by Benzo & Mycroft'
 version '3.0'
 lua54 'yes'
 
-shared_scripts  {'@es_extended/imports.lua',     '@ox_lib/init.lua', 'config.lua'}
+shared_scripts  { '@ox_lib/init.lua', 'config.lua'}
 
 server_script 'server.lua'
 
