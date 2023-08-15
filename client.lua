@@ -289,11 +289,16 @@ end
 RegisterCommand("radio", function(source)
     if Config.Item then 
         local amount = exports.ox_inventory:Search('count', 'radio')
-        if amount  >= 1 then
+        if amount < 1 then 
             return
+            lib.notify({
+                title = 'Info',
+                description = 'You dont have a radio',
+                type = 'error'
+            })
         end
     end
-        toggleRadio(not radioMenu)
+    toggleRadio(not radioMenu)
 end)
 
 if Config.KeyMappings.Enabled then
