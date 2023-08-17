@@ -257,7 +257,7 @@ CreateThread(function()
     while Config.Item do
         Wait(1000)
         if cache.ped and onRadio then
-               if exports.ox_inventory:Search('count', 'radio') > 0 then
+               if exports.ox_inventory:Search('count', 'radio') > 1 then
                     if RadioChannel ~= 0 then
                         leaveradio()
                     end
@@ -289,7 +289,12 @@ end
 RegisterCommand("radio", function(source)
     if Config.Item then 
         local amount = exports.ox_inventory:Search('count', 'radio')
-        if amount  >= 1 then
+        if amount < 1 then
+            lib.notify({
+                title = 'Info',
+                description = 'You dont have a radio',
+                type = 'error'
+            })
             return
         end
     end
